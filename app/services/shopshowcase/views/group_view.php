@@ -1,82 +1,85 @@
-<pre><?php print_r($_SESSION['alias']) ?></pre>
-<main class="container">
-	<?php $path__breadcrumbs = APP_PATH . 'views/@commons/__breadcrumbs.php';
-	if(file_exists($path__breadcrumbs))
-		require $path__breadcrumbs; ?>
+<link rel="stylesheet" type="text/css" href="<?= SERVER_URL . 'style/' . $_SESSION['alias']->alias . '/shopshowcase.css' ?>">
 
-	<h1><?=$_SESSION['alias']->name?></h1>
-	<?php if(!empty($filters)) { ?>
-		<i class="fas fa-sliders-h hide m-show"></i>
-	<?php }
-	if(!empty($_SESSION['alias']->list))
-		echo "<p class=\"short\">{$_SESSION['alias']->list}</p>"; ?>
-
-	<div class="d-flex m-wrap catalog bordered">
-		<?php $class = 'w100';
-		if(!empty($filters)) {
-			$class = 'w80';
-			echo '<aside class="w20 m-w100">';
-			require_once '__filter.php';
-			echo "</aside>";
-		} ?>
-		<article class="<?=$class?> m-w100">
-			<?php if(!empty($subgroups)) {
-				echo "<section class='subgroups d-flex wrap'>";
-				foreach ($subgroups as $subgroup) {
-					echo '<a href="'.SITE_URL.$subgroup->link.'">';
-					if($subgroup->photo)
-						echo '<img src="'.IMG_PATH.$subgroup->subgroup_photo.'" alt="'.IMG_PATH.$subgroup->name.'">';
-					echo "<span>{$subgroup->name}</span></a>";
-				}
-				if($addDiv = count($subgroups) % 4)
-					while ($addDiv++ < 4) {
-						echo "<a class='empty'></a>";
-					}
-				echo "</section>";
-			}
-
-			if(!empty($products)) {
-				echo "<section class='d-flex wrap products'>";
-				foreach ($products as $product) {
-					require '__product_subview.php';
-				}
-				$addDiv = count($products) % 3;
-				if($addDiv)
-					while ($addDiv++ < 3) {
-						echo "<a class='empty'></a>";
-					}
-				echo "</section>";
-
-				echo "<div class='pull-right mt-15'>Знайдено: {$_SESSION['option']->paginator_total} страв</div>";
-
-				$this->load->library('paginator');
-				echo $this->paginator->get();
-			}
-			elseif($_SESSION['option']->showProductsParentsPages || empty($subgroups))
-			{
-				if($use_filter)
-					$errors = $this->text('за даним запитом товари не знайдено');
-				else
-					$errors = $this->text('В даній групі відсутні товари'); ?>
-				<div class="p-15">
-					<div class="alert alert-danger">
-			            <h4><?=$this->text('Вибачте,', 0)?></h4>
-			            <p><?=$errors?></p>
-			        </div>
-				</div>
-            <?php }
-
-			if(empty($_GET['page']) && !$use_filter && (!empty($_SESSION['alias']->list) || !empty($_SESSION['alias']->text))) {
-				echo '<section class="description">';
-				// if(!empty($_SESSION['alias']->list))
-				// 	echo "<p class=\"short\">{$_SESSION['alias']->list}</p>";
-				if(!empty($_SESSION['alias']->videos)) {
-                    $this->load->library('video');
-                    $this->video->show_many($_SESSION['alias']->videos);
-                }
-                echo $_SESSION['alias']->text;
-                echo "</section>";
-			} ?>
-		</article>
+<section>
+<pre><?php print_r($data); ?></pre>
+	<!-- <pre></?php print_r($products) ?></pre> -->
+	<div class="flex navig_title">
+		<a href="<?= SITE_URL ?>"><?= $this->text('Головна', 0) ?>/</a>
+		<a href="<?= SITE_URL . $_SESSION['alias']->alias ?>"><?= $this->text(' Каталог товарів', 0) ?></a>
 	</div>
-</main>
+	<div class="products_title">
+		<span><?= $_SESSION['alias']->title?></span>
+	</div>
+</section>
+<section class=" flex product_page" id="catalog">
+	<div class="w256  mr32 fillter_area">
+		<form class="pos_rel w256" name="by" type="get" method="GET" action="<?= SITE_URL ?>search">
+			<input class="search_input w256" id="" placeholder="<?= $this->text('Я шукаю...', 0) ?>" required name="by" type="search" data-toggle="" data-list="">
+			<button class="btn_non " type="submit"><i class="search_icon curs_p"></i></button>
+		</form>
+		<div class="w256  mr32 fillter_card padd_10">
+			<span>Призначення інструменту:</span>
+			<div class="padd_8 group">
+				<input type="checkbox" class="custom-checkbox" id="1" name="" value="">
+				<label for="1">Зняття брекетів</label>
+			</div>
+			<div class="padd_8 group">
+				<input type="checkbox" class="custom-checkbox" id="2" name="" value="">
+				<label for="2">Зняття кілець</label>
+			</div>
+			<div class="padd_8 group">
+				<input type="checkbox" class="custom-checkbox" id="3" name="" value="">
+				<label for="3">Зняття композиту</label>
+			</div>
+			<span>Виробник:</span>
+			<div class="padd_8 group">
+				<input type="checkbox" class="custom-checkbox" id="4" name="" value="">
+				<label for="4">Виробник 1</label>
+			</div>
+			<div class="padd_8 group">
+				<input type="checkbox" class="custom-checkbox" id="5" name="" value="">
+				<label for="5">Виробник 2</label>
+			</div>
+			<div class="padd_8 group">
+				<input type="checkbox" class="custom-checkbox" id="6" name="" value="">
+				<label for="6">Виробник 3</label>
+			</div>
+		</div>
+	</div>
+	<div class="flex-wrap catalog_products">
+		<?php if (!empty($products)) { ?>
+			<?php foreach ($products as $product) { ?>
+					<div class="product w28 mb-30">
+						<img src="<?= IMG_PATH .$product->photo ?>">
+						<span><?=$product->article_show?></span>
+						<a href="<?=$product->link ?>"><?=$product->name ?></a>
+						<div><span>2 500 ₴</span><button>Купити</button></div>
+					</div>
+		<?php
+				
+			}
+		}
+		?>
+		<!-- <div class="product w28 mb-30">
+			<img src="</?= IMG_PATH ?>товар.svg">
+			<span>Артикул: 491-8870</span>
+			<p>Брекет Damon Q2, паз 022
+				на правый боковой резец верхней челюсти, стандартный торк</p>
+			<div><span>2 500 ₴</span><button>Купити</button></div>
+		</div>
+		<div class="product w28 mb-30">
+			<img src="</?= IMG_PATH ?>товар.svg">
+			<span>Артикул: 491-8870</span>
+			<p>Брекет Damon Q2, паз 022
+				на правый боковой резец верхней челюсти, стандартный торк</p>
+			<div><span>2 500 ₴</span><button>Купити</button></div>
+		</div>
+		<div class="product w28 mb-30">
+			<img src="<//?= IMG_PATH ?>товар.svg">
+			<span>Артикул: 491-8870</span>
+			<p>Брекет Damon Q2, паз 022
+				на правый боковой резец верхней челюсти, стандартный торк</p>
+			<div><span>2 500 ₴</span><button>Купити</button></div>
+		</div> -->
+	</div>
+</section>

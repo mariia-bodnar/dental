@@ -33,10 +33,9 @@ $(document).ready(function () {
     }
   })
   $('.for_open_detal').on('click', function () {
-    var list_open = $(this).parent('li');
-    $(list_open).siblings().removeClass('active');
-    $(list_open).toggleClass('active');
-   
+    var list_open = $(this).parent('li')
+    $(list_open).siblings().removeClass('active')
+    $(list_open).toggleClass('active')
   })
 })
 $(document).ready(function () {
@@ -60,6 +59,19 @@ $(document).ready(function () {
     pagination: {
       el: '.swiper-pagination',
       clickable: true,
+    },
+  })
+  var swiper = new Swiper('.mySwiper_3', {
+    slidesPerView: 1,
+    spaceBetween: 30,
+    loop: false,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
     },
   })
   //  if($( window ).width('>1200px')){
@@ -87,9 +99,23 @@ $(document).ready(function () {
       })
     }
   })
-  $("#firstWord").html(function(){
-    var text= $(this).text().trim().split(" ");
-    var first = text.shift();
-    return (text.length > 0 ? "<span class='color_green'>"+ first + "</span> " : first) + text.join(" ");
-  });
+  $('#firstWord').html(function () {
+    var text = $(this).text().trim().split(' ')
+    var first = text.shift()
+    return (
+      (text.length > 0
+        ? "<span class='color_green'>" + first + '</span> '
+        : first) + text.join(' ')
+    )
+  })
+
+  $('#firstWordinRed').html(function () {
+    var text = $(this).text().trim().split(' ')
+    var first = text.shift()
+    return (
+      (text.length > 0
+        ? "<span class='color_red'>" + first + '</span> '
+        : first) + text.join(' ')
+    )
+  })
 })

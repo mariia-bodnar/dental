@@ -1,4 +1,5 @@
 <link rel="stylesheet" type="text/css" href="<?=SERVER_URL.'style/'.$_SESSION['alias']->alias.'/library.css'?>">
+<pre><?php print_r($_SESSION['alias'])?></pre>
 
 <main class="container">
 	<?php if($this->userCan()) { ?>

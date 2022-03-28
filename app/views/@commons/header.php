@@ -1,3 +1,4 @@
+<?php $all_g = $this->load->function_in_alias('shopshowcase', '__get_Groups', -1); ?>
 <header class="container block pt_50">
     <div class="flex w100 align h40 upper_menu">
         <a class="mr_28 curs_p w265px" href="<?= SITE_URL ?>"><img src="<?= IMG_PATH ?>logo.svg" alt="logotype"> </a>
@@ -16,28 +17,26 @@
             <li class="btn flex mr_35"><span class="btn_i pl_35"></span><?= $this->text('Каталог товарів', 0) ?>
                 <div class="container style_menu size-1 h-500 display_none">
                     <ul class=" catalog gap_15 padd_0">
-                        <li class="sp_beetween"><span><?= $this->text('Товар 1', 0) ?></span><span class="flex_end">></span>
-                            <ul class="secondary_menu">
-                                <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                                <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                                <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                                <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                                <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                                <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                                <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                            </ul>
-                        </li>
-                        <li class="sp_beetween"><span><?= $this->text('Товар 1', 0) ?></span><span class="flex_end">></span></li>
-                        <li class="sp_beetween"><span><?= $this->text('Товар 1', 0) ?></span><span class="flex_end">></span></li>
-                        <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                        <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                        <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                        <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                        <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                        <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                        <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                        <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
-                        <li class="text-left"><?= $this->text('Товар 1', 0) ?></li>
+                        <?php if ($all_g) {
+                            foreach ($all_g as $group) { ?>
+                                <?php if ($group->parent == 0 && !empty($group->haveChild)) { 
+                                    $parent = $group;?>
+                                    
+                                    <li class="sp_beetween"><a href="<?=  $parent->link ?>"><?=  $parent->name ?></a><span class="flex_end">></span>
+                                        <ul class="secondary_menu">
+                                            <?php foreach ($all_g as $group) { ?>
+                                                <?php if ($group->parent == $parent->id ) { ?>
+                                                    <li class="text-left"><a href="<?= $group->link ?>"><?= $group->name ?></a></li>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </ul>
+
+                                    <?php  } elseif (empty($group->haveChild) && $group->parent == "0") { ?>
+                                    <li class="text-left"><a href="<?= $group->link ?>"><?= $group->name ?></a></li>
+                                <?php }
+                                ?>
+                            <?php }
+                        } ?>
                     </ul>
                 </div>
             </li>
